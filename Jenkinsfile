@@ -6,10 +6,33 @@ pipeline {
     
   }
   stages {
-    stage('Get Oracle Docker Sources') {
+    stage('Start Oracle XE Container') {
       steps {
-        echo 'Test'
-        git(url: 'https://github.com/oracle/docker-images.git', changelog: true, poll: true, credentialsId: '	1abca346-d215-4d44-8adf-64f2264e9614')
+        parallel(
+          "Start Oracle XE Container": {
+            echo 'Start'
+            
+          },
+          "Wait for Oracle Container Start": {
+            echo 'Wait'
+            
+          }
+        )
+      }
+    }
+    stage('Configure XE Container') {
+      steps {
+        echo 'Configure'
+      }
+    }
+    stage('Push XE Container to Registry') {
+      steps {
+        echo 'Push'
+      }
+    }
+    stage('Clean Up') {
+      steps {
+        echo 'Clean Up'
       }
     }
   }
