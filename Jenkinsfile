@@ -10,11 +10,11 @@ pipeline {
       steps {
         parallel(
           "Start Oracle XE Container": {
-            echo 'Start'
+            sh 'sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -p 1521:1521 -p 80:8080 -p 5500:5500 -e ORACLE_PWD=oracle localhost:5000/oracle/database:11.2.0.2-xe'
             
           },
           "Wait for Oracle Container Start": {
-            echo 'Wait'
+            sh 'wget http://localhost/apex --retry-connrefused --tries=0 -q --wait=3 --spider --connect-timeout=60'
             
           }
         )
@@ -32,7 +32,8 @@ pipeline {
     }
     stage('Clean Up') {
       steps {
-        echo 'Clean Up'
+        sh '''docker stop db11.2.0.2-xe
+docker rm db11.2.0.2-xe'''
       }
     }
   }
