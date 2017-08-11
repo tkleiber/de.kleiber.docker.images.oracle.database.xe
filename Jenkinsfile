@@ -8,16 +8,9 @@ pipeline {
   stages {
     stage('Start Oracle XE Container') {
       steps {
-        parallel(
-          "Start Oracle XE Container": {
-            sh 'sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -p 1521:1521 -p 80:8080 -p 5500:5500 -e ORACLE_PWD=oracle localhost:5000/oracle/database:11.2.0.2-xe'
-            
-          },
-          "Wait for Oracle Container Start": {
-            sh 'wget http://localhost/apex --retry-connrefused --tries=0 -q --wait=3 --spider --connect-timeout=60'
-            
-          }
-        )
+        sh '''sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -p 1521:1521 -p 80:8080 -p 5500:5500 -e ORACLE_PWD=oracle localhost:5000/oracle/database:11.2.0.2-xe &
+wget http://localhost/apex --retry-connrefused --tries=0 -q --wait=3 --spider --connect-timeout=60
+sudo docker ps'''
       }
     }
     stage('Configure XE Container') {
