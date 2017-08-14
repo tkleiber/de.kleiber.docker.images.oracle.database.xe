@@ -24,9 +24,15 @@ sudo docker ps'''
         )
       }
     }
-    stage('Configure XE Container') {
+    stage('Install utPLSQL') {
       steps {
         echo 'Configure'
+        sh '''# Download the latest release "zip" file
+sudo docker exec db11.2.0.2-xe curl -LOk $(curl --silent https://api.github.com/repos/utPLSQL/utPLSQL/releases/latest | awk '/browser_download_url/ { print $2 }' | grep ".zip" | sed 's/"//g') 
+# Extract downloaded "zip" file
+sudo docker exec db11.2.0.2-xe unzip -q utPLSQL.zip
+# Headless installation
+sudo docker exec db11.2.0.2-xe sqlplus sys/oracle@xe as sysdba @@source/install_headless.sql '''
       }
     }
     stage('Push XE Container to Registry') {
