@@ -32,7 +32,7 @@ sudo docker exec db11.2.0.2-xe curl -LOk $(curl --silent https://api.github.com/
 # Extract downloaded "zip" file
 sudo docker exec db11.2.0.2-xe unzip -q utPLSQL.zip
 # Headless installation
-sudo docker exec db11.2.0.2-xe sqlplus sys/oracle@//localhost:1521/XE as sysdba @@source/install_headless.sql '''
+sudo docker exec db11.2.0.2-xe sqlplus sys/oracle@//localhost:1521/XE as sysdba @utPLSQL/source/install_headless.sql '''
       }
     }
     stage('Push XE Container to Registry') {
