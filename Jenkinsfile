@@ -16,7 +16,7 @@ sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -e O
           },
           "Wait for successful start": {
             sh '''echo wait for successful start
-sudo docker exec db11.2.0.2-xe bash -c 'sudo yum -y install wget; wget http://localhost/apex --retry-connrefused --tries=0 -q --wait=3 --spider --connect-timeout=60'
+sudo docker exec db11.2.0.2-xe bash -c 'yum -y install wget; wget http://localhost/apex --retry-connrefused --tries=0 -q --wait=3 --spider --connect-timeout=60'
 echo show container
 sudo docker ps'''
             
