@@ -39,7 +39,7 @@ sudo docker exec db11.2.0.2-xe bash -c 'cd utPLSQL/source; sqlplus sys/oracle@//
       steps {
         echo 'Push'
         sh '''# get the id of the container
-export xe_id=$(sudo docker ps -aqf "db11.2.0.2-xe")
+export xe_id=$(sudo docker ps -aqf "name=db11.2.0.2-xe")
 # commit to local docker registry
 sudo docker commit $xe_id localhost:5000/tkleiber/database:11.2.0.2-xe'''
       }
