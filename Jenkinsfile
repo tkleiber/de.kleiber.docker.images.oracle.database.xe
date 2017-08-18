@@ -37,6 +37,7 @@ sudo docker exec db11.2.0.2-xe bash -c 'cd utPLSQL/source; sqlplus sys/oracle@//
     }
     stage('Push XE Container to Registry') {
       steps {
+        input 'Go further?'
         sh '''# stop the container
 docker stop db11.2.0.2-xe
 # get the id of the container
@@ -44,9 +45,7 @@ export xe_id=$(sudo docker ps -aqf "name=db11.2.0.2-xe")
 # commit to local docker registry
 sudo docker commit $xe_id localhost:5000/tkleiber/database:11.2.0.2-xe
 # push to local docker registry
-docker push localhost:5000/tkleiber/database:11.2.0.2-xe
-'''
-        input 'Go further?'
+docker push localhost:5000/tkleiber/database:11.2.0.2-xe'''
       }
     }
     stage('Clean Up') {
