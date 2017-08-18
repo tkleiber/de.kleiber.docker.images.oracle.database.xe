@@ -11,7 +11,7 @@ pipeline {
         parallel(
           "Start Oracle XE Container": {
             sh '''echo start Oracle XE container in Background because of the log output
-sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -p 1521:1521 -p 80:8080 -p 5500:5500 -v /home/oracle/oradata:/opt/oracle/oradata -e ORACLE_PWD=oracle localhost:5000/oracle/database:11.2.0.2-xe &'''
+sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -p 1521:1521 -p 80:8080 -p 5500:5500 -e ORACLE_PWD=oracle localhost:5000/oracle/database:11.2.0.2-xe &'''
             
           },
           "Wait for successful start": {
@@ -37,7 +37,6 @@ sudo docker exec db11.2.0.2-xe bash -c 'cd utPLSQL/source; sqlplus sys/oracle@//
     }
     stage('Push XE Container to Registry') {
       steps {
-        echo 'Push'
         sh '''# stop the container
 docker stop db11.2.0.2-xe
 # get the id of the container
@@ -47,6 +46,7 @@ sudo docker commit $xe_id localhost:5000/tkleiber/database:11.2.0.2-xe
 # push to local docker registry
 docker push localhost:5000/tkleiber/database:11.2.0.2-xe
 '''
+        input 'Go further?'
       }
     }
     stage('Clean Up') {
