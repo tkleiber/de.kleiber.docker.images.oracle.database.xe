@@ -11,7 +11,7 @@ pipeline {
         parallel(
           "Start Oracle XE Container": {
             sh '''echo start Oracle XE container in Background because of the log output
-sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -p 1521:1521 -p 80:8080 -p 5500:5500 -v /home/oracle/oradata:/opt/oracle/oradata-e ORACLE_PWD=oracle localhost:5000/oracle/database:11.2.0.2-xe &'''
+sudo docker run --name=db11.2.0.2-xe --shm-size=1g --restart=unless-stopped -p 1521:1521 -p 80:8080 -p 5500:5500 -v /home/oracle/oradata:/opt/oracle/oradata -e ORACLE_PWD=oracle localhost:5000/oracle/database:11.2.0.2-xe &'''
             
           },
           "Wait for successful start": {
